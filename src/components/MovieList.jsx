@@ -2,7 +2,7 @@ import Movie from "./Movie";
 
 export default function MovieList({ movies, onAddToList }) {
   return (
-    <div className="container my-3">
+    <div className="my-3">
       <div className="card">
         <div className="card-header">
           <h2 className="title h5 mb-0">Movie List</h2>

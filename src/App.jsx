@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 
 import Logo from "./components/logo";
+import Loading from "./components/loading";
 import SearchForm from "./components/SearchForm";
 import WatchListButton from "./components/WatchListButton";
 
@@ -19,19 +20,20 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [watchListMovies, setWatchListMovies] = useState([]);
   const [isWatchListOpen, setIsWatchListOpen] = useState(false);
-
-  // mounting => ilk render edilme anı
-  // re-render => state değiştiğinde yeniden render edilme anı
-  // unmount => componentin DOM'dan kaldırılması
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=batman&page=${page}&language=${language}&query=${query}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setMovies(data.results);
-      });
+    async function getMovies() {
+      setloading(true);
+      const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=batman&page=${page}&language=${language}&query=${query}`
+      );
+
+      const data = await response.json();
+      setMovies(data.results);
+      setloading(false);
+    }
+    getMovies();
   }, []);
 
   function handleAddToWatchList(movie) {
@@ -63,7 +65,12 @@ export default function App() {
           isWatchListOpen={isWatchListOpen}
           onRemoveFromWatchList={handleRemoveFromWatchList}
         />
-        <MovieList movies={movies} onAddToList={handleAddToWatchList} />
+
+        {loading ? (
+          <Loading />
+        ) : (
+          <MovieList movies={movies} onAddToList={handleAddToWatchList} />
+        )}
       </Main>
       <Footer />
     </>
