@@ -23,13 +23,14 @@ export default function App() {
   const [isWatchListOpen, setIsWatchListOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState(query);
 
   useEffect(() => {
     async function getMovies() {
       setloading(true);
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&page=${page}&language=${language}&query=${query}`
+          `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&page=${page}&language=${language}&query=${searchQuery}`
         );
 
         if (!response.status === 404) {
@@ -68,8 +69,15 @@ export default function App() {
 
       setloading(false);
     }
+
+    if (searchQuery.length < 4) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+
     getMovies();
-  }, []);
+  }, [searchQuery]);
 
   function handleAddToWatchList(movie) {
     const isAddedToList = watchListMovies.map((i) => i.id).includes(movie.id);
@@ -87,7 +95,7 @@ export default function App() {
     <>
       <Header>
         <Logo />
-        <SearchForm />
+        <SearchForm searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <WatchListButton
           movies={watchListMovies}
           onSetIsWatchListOpen={setIsWatchListOpen}
