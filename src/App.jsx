@@ -5,6 +5,7 @@ import Main from "./components/Main";
 
 import Logo from "./components/logo";
 import Loading from "./components/loading";
+import ErrorMessage from "./components/ErrorMessage";
 import SearchForm from "./components/SearchForm";
 import WatchListButton from "./components/WatchListButton";
 
@@ -21,16 +22,50 @@ export default function App() {
   const [watchListMovies, setWatchListMovies] = useState([]);
   const [isWatchListOpen, setIsWatchListOpen] = useState(false);
   const [loading, setloading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function getMovies() {
       setloading(true);
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=batman&page=${page}&language=${language}&query=${query}`
-      );
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&page=${page}&language=${language}&query=${query}`
+        );
 
-      const data = await response.json();
-      setMovies(data.results);
+        if (!response.status === 404) {
+          throw new Error("Film bulunamadı (Movie not found)");
+        } else if (response.status === 401) {
+          throw new Error("API anahtarı geçersiz (Invalid API key)");
+        } else if (response.status === 500) {
+          throw new Error("Sunucu hatası (Server error)");
+        } else if (response.status === 503) {
+          throw new Error(
+            "Servis geçici olarak kullanılamıyor (Service unavailable)"
+          );
+        } else if (response.status === 429) {
+          throw new Error("Çok fazla istek yapıldı (Too many requests)");
+        } else if (response.status === 400) {
+          throw new Error("Geçersiz istek (Bad request)");
+        } else if (response.status === 403) {
+          throw new Error("Erişim reddedildi (Access denied)");
+        } else if (response.status === 408) {
+          throw new Error("İstek zaman aşımına uğradı (Request timed out)");
+        }
+
+        if (!response.ok) {
+          throw new Error("Hata Oluştu (Error)");
+        }
+
+        const data = await response.json();
+
+        if (data.results) {
+          setMovies(data.results);
+        }
+        setError("");
+      } catch (error) {
+        setError(error.message);
+      }
+
       setloading(false);
     }
     getMovies();
@@ -66,11 +101,12 @@ export default function App() {
           onRemoveFromWatchList={handleRemoveFromWatchList}
         />
 
-        {loading ? (
-          <Loading />
-        ) : (
+        {loading && <Loading />}
+
+        {!loading && !error && (
           <MovieList movies={movies} onAddToList={handleAddToWatchList} />
         )}
+        {error && <ErrorMessage message={error} />}
       </Main>
       <Footer />
     </>
