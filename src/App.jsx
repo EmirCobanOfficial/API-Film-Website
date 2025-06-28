@@ -14,6 +14,7 @@ import WatchList from "./components/WatchList";
 import Movie from "./components/Movie";
 import MovieDetails from "./components/MovieDetails";
 
+
 const api_key = "b06c4279d23840a7ced8ecb94f0faff4";
 const page = 1;
 const query = "batman";
@@ -35,26 +36,6 @@ export default function App() {
         const response = await fetch(
           `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&page=${page}&language=${language}&query=${searchQuery}`
         );
-
-        // if (!response.status === 404) {
-        //   throw new Error("Film bulunamadı (Movie not found)");
-        // } else if (response.status === 401) {
-        //   throw new Error("API anahtarı geçersiz (Invalid API key)");
-        // } else if (response.status === 500) {
-        //   throw new Error("Sunucu hatası (Server error)");
-        // } else if (response.status === 503) {
-        //   throw new Error(
-        //     "Servis geçici olarak kullanılamıyor (Service unavailable)"
-        //   );
-        // } else if (response.status === 429) {
-        //   throw new Error("Çok fazla istek yapıldı (Too many requests)");
-        // } else if (response.status === 400) {
-        //   throw new Error("Geçersiz istek (Bad request)");
-        // } else if (response.status === 403) {
-        //   throw new Error("Erişim reddedildi (Access denied)");
-        // } else if (response.status === 408) {
-        //   throw new Error("İstek zaman aşımına uğradı (Request timed out)");
-        // }
 
         if (!response.ok) {
           throw new Error("Hata Oluştu (Error)");
@@ -115,6 +96,8 @@ export default function App() {
           <MovieDetails
             movieObj={selectedMovie}
             onClose={() => setSelectedMovie(null)}
+            api_key={api_key}
+            language={language}
           />
         )}
 
