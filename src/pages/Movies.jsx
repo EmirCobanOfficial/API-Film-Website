@@ -10,11 +10,10 @@ const language = "en-US";
 
 function Movies() {
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   useEffect(() => {
     async function getMovies() {
-      setLoading(true);
       try {
         const response = await fetch(
           `${apiUrl}/movie/popular?api_key=${api_key}&page=${page}&language=${language}&query=`
@@ -51,7 +50,7 @@ function Movies() {
         </div>
         <div className="card-body">
           {movies.length == 0 ? (
-            <div>Film bulunamadı</div> 
+            <div>Film bulunamadı</div>
           ) : (
             <div
               id="movie-list"
