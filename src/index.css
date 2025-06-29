@@ -9,3 +9,7 @@
 .f30 {
   font-size: 30px;
 }
+
+.active {
+  color: red;
+}
