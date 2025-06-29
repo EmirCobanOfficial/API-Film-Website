@@ -3,18 +3,10 @@ import { NavLink } from "react-router";
 
 function Movies() {
   return (
-    <>
-      <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/movies" end>
-          Movies
-        </NavLink>
-        <NavLink to="/movies/1" end>
-          Movie Details
-        </NavLink>
-      </nav>
+    <div id="movies">
+      <h2>Movies Page</h2>
       <div>Welcome Movies Page</div>
-    </>
+    </div>
   );
 }
 export default Movies;

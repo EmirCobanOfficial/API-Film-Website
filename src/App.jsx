@@ -3,19 +3,17 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
+import MainLayout from "./Layouts/MainLayout";
 
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/movies",
-    element: <Movies />,
-  },
-  {
-    path: "/movies/1",
-    element: <MovieDetails />,
+    element: <MainLayout />,
+    children: [
+      {path: "/", element: <Home />},
+      {path: "/movies", element: <Movies />},
+      {path: "/movies/1", element: <MovieDetails />},
+    ],
   },
 ]);
 
