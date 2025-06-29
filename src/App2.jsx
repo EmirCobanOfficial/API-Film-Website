@@ -3,7 +3,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Main from "./components/Main";
 
-import Logo from "./components/logo";
+import Logo from "../components/logo";
 import Loading from "./components/loading";
 import ErrorMessage from "./components/ErrorMessage";
 import SearchForm from "./components/SearchForm";
