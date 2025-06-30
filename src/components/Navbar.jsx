@@ -1,5 +1,6 @@
 import Logo from "../components/Logo";
 import { NavLink } from "react-router";
+import SearchForm from "./SearchForm";
 
 export default function Navbar() {
   return (
@@ -33,6 +34,7 @@ export default function Navbar() {
               </NavLink>
             </li>
           </ul>
+          <SearchForm />
         </div>
       </div>
     </nav>

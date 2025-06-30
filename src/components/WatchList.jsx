@@ -8,18 +8,47 @@ export default function WatchList({
   return (
     <>
       {isWatchListOpen && (
-        <div className="my3">
-          <div className="card">
-            <div className="card-header">
-              <h2 className="title h5 mb-0">Watch List</h2>
+        <div className="watchlist-container" style={{ padding: "2rem 0", background: "#f5f7fa", minHeight: "100vh" }}>
+          <div className="watchlist-card" style={{
+            maxWidth: "900px",
+            margin: "0 auto",
+            background: "#fff",
+            borderRadius: "16px",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+            overflow: "hidden"
+          }}>
+            <div className="watchlist-header" style={{
+              padding: "1.5rem 2rem",
+              borderBottom: "1px solid #eaeaea",
+              background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)"
+            }}>
+              <h2 className="title" style={{
+                margin: 0,
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "1.5rem",
+                letterSpacing: "0.5px"
+              }}>🎬 Watch List</h2>
             </div>
-            <div className="card-body">
+            <div className="watchlist-body" style={{ padding: "2rem" }}>
               {movies.length === 0 ? (
-                <div>Film bulunamadı</div>
+                <div style={{
+                  textAlign: "center",
+                  color: "#888",
+                  fontSize: "1.1rem",
+                  padding: "2rem 0"
+                }}>
+                  No movies found in your watch list.
+                </div>
               ) : (
                 <div
                   id="movie-list"
-                  className="row row-cols-3 row-cols-md-4 row-cols-lg-6 g-1 g-lg-3"
+                  className="row"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                    gap: "1.5rem"
+                  }}
                 >
                   {movies.map((m, index) => (
                     <WatchListMovie

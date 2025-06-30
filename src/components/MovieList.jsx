@@ -9,7 +9,7 @@ export default function MovieList({ movies, title }) {
         </div>
         <div className="card-body">
           {movies.length == 0 ? (
-            <div>Film bulunamadı</div>
+            <div>Film not found</div>
           ) : (
             <div
               id="movie-list"
