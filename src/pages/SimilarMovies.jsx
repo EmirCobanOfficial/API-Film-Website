@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ErrorMessage from "../components/ErrorMessage";
-import Movie from "../components/Movie";
 import Loading from "../components/loading";
 import MovieList from "../components/MovieList";
 
@@ -9,7 +8,7 @@ const api_key = "b06c4279d23840a7ced8ecb94f0faff4";
 const page = 1;
 const language = "en-US";
 
-function Movies() {
+function SimilarMovies({ movieId }) {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,11 +16,11 @@ function Movies() {
     async function getMovies() {
       try {
         const response = await fetch(
-          `${apiUrl}/movie/popular?api_key=${api_key}&page=${page}&language=${language}&query=`
+          `${apiUrl}/movie/${movieId}/similar?api_key=${api_key}&page=${page}&language=${language}&query=`
         );
 
         if (!response.ok) {
-          throw new Error("Hata Oluştu (Error)");
+          throw new Error("Error");
         }
 
         const data = await response.json();
@@ -38,11 +37,11 @@ function Movies() {
     }
 
     getMovies();
-  }, []);
+  }, [movieId]);
 
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error} />;
 
-  return <MovieList movies={movies} title={"Similar Movies"} />;
+  return <MovieList movies={movies} title="Similar Movies" />;
 }
-export default Movies;
+export default SimilarMovies;

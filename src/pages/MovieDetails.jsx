@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Loading from "../components/loading";
 import ErrorMessage from "../components/ErrorMessage";
+import SimilarMovies from "./SimilarMovies";
 
 const apiUrl = "https://api.themoviedb.org/3";
 const api_key = "b06c4279d23840a7ced8ecb94f0faff4";
@@ -22,7 +23,7 @@ const MovieDetails = () => {
         );
 
         if (!response.ok) {
-          throw new Error("Hata Oluştu (Error)");
+          throw new Error("Error");
         }
 
         const data = await response.json();
@@ -43,97 +44,154 @@ const MovieDetails = () => {
   if (error) return <ErrorMessage message={error} />;
 
   return (
-    <div className="my-3">
-      <div className="card">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h2 className="title h5 mb-0">Movie Details</h2>
-        </div>
-        <div className="card-body">
-          <div className="row">
-            <div className="col-md-3">
-              <img
-                src={
-                  "https://image.tmdb.org/t/p/original/" + movie?.poster_path
-                }
-                alt=""
-                className="img-fluid"
-              />
-            </div>
-            <div className="col-md-9">
-              <h3>{movie?.title}</h3>
-              <p>{movie?.overview}</p>
-              <p>Release Date: {movie?.release_date}</p>
-              <p>Rating: {movie?.vote_average}</p>
-              {/* Details Section */}
-
-              <div>
-                <h4>Details:</h4>
-                <p>Runtime: {movie.runtime} minutes</p>
+    <>
+      <div
+        className="movie-details-bg text-white"
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+          width: "100%",
+        }}
+      >
+        <div
+          className="bg-dark bg-opacity-85"
+          style={{
+            minHeight: "100vh",
+            width: "100%",
+            paddingTop: "40px",
+            paddingBottom: "40px",
+          }}
+        >
+          <div className="container d-flex justify-content-center align-items-start py-5">
+            <div className="row w-100">
+              <div className="col-md-3 d-none d-lg-block">
+                <img
+                  src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                  alt={movie.title}
+                  className="img-fluid rounded shadow img-thumbnail"
+                />
+              </div>
+              <div className="col-md-9">
+                <h1 className="display-4">{movie.title}</h1>
                 <p>
-                  Production Companies:{" "}
-                  {movie.production_companies
-                    ?.map((pc) => pc.name)
-                    .join(", ") || "N/A"}
+                  {movie.release_date} <i className="bi bi-dot text-white"></i>
+                  <span className="text-white">
+                    {movie.genres.map((genre) => genre.name).join(", ")}
+                  </span>
+                  <i className="bi bi-dot text-white"></i>
+                  {movie.runtime} Mins
                 </p>
                 <p>
-                  Screenwriter:{" "}
-                  {movie.credits?.crew?.find(
-                    (p) => p.job === "Screenplay" || p.job === "Writer"
-                  )?.name || "N/A"}
+                  <span className="badge bg-warning text-dark">
+                    {Math.round(movie.vote_average * 10)}%
+                  </span>
                 </p>
-
-                {/* --- NEW & IMPROVED GENRES SECTION --- */}
-                {movie.genres?.length > 0 && (
-                  <div className="mt-4">
-                    <h5>Genres</h5>
-                    <div className="d-flex flex-wrap">
-                      {movie.genres.map((genre) => (
-                        <a
-                          href="#"
-                          key={genre.id}
-                          className="badge bg-info me-2 mb-2 text-decoration-none"
-                          onClick={(e) => e.preventDefault()} // Prevents page from jumping
-                        >
-                          {genre.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
+                {movie.overview && (
+                  <p className="lead">
+                    <strong>Summary: </strong>
+                    {movie.overview}
+                  </p>
                 )}
-                {/* --- END OF NEW SECTION --- */}
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                  <p className="d-flex flex-column text-center mb-2 mb-md-0">
+                    <span>Producer</span>
+                    <span>
+                      {movie.production_companies?.[0]?.name || "N/A"}
+                    </span>
+                  </p>
+                  <p className="d-flex flex-column text-center mb-2 mb-md-0">
+                    <span>Director</span>
+                    <span>
+                      {movie.credits?.crew?.find((c) => c.job === "Director")
+                        ?.name || "N/A"}
+                    </span>
+                  </p>
+                  <p className="d-flex flex-column text-center">
+                    <span>Screenwriter</span>
+                    <span>
+                      {movie.credits?.crew?.find(
+                        (c) => c.job === "Screenplay" || c.job === "Writer"
+                      )?.name || "N/A"}
+                    </span>
+                  </p>
+                </div>
               </div>
-
-              {/* Actors section remains the same */}
-              <p className="mt-4">Actors</p>
-              <div className="row">
-                {movie?.credits?.cast?.slice(0, 12).map((actor) => (
-                  <div className="col-md-2" key={actor.id}>
-                    <div className="card mb-2">
-                      <img
-                        src={
-                          actor.profile_path
-                            ? "https://image.tmdb.org/t/p/w500/" +
-                              actor.profile_path
-                            : "https://placehold.co/150x225?text=No+Image"
-                        }
-                        alt={actor.name}
-                        className="card-img-top"
-                      />
-                      <div className="card-body">
-                        <h5 className="card-title">{actor.name}</h5>
-                        <p className="card-text">
-                          {actor.character || "No character info"}
-                        </p>
-                      </div>
+            </div>
+          </div>
+          {/* Actor */}
+          <div className="container pb-5">
+            <h3 className="mt-5 mb-3 fw-bold text-white">Actors</h3>
+            <div className="row g-4">
+              {movie?.credits?.cast?.slice(0, 12).map((actor) => (
+                <div
+                  className="col-6 col-sm-4 col-md-3 col-lg-2"
+                  key={actor.id}
+                >
+                  <div
+                    className="card border-0 shadow-sm h-100 text-center actor-card"
+                    style={{
+                      background: "rgba(30, 30, 30, 0.95)",
+                      borderRadius: "1rem",
+                      transition: "transform 0.2s",
+                      cursor: "pointer",
+                    }}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                  >
+                    <img
+                      src={
+                        actor.profile_path
+                          ? "https://image.tmdb.org/t/p/w500/" +
+                            actor.profile_path
+                          : "https://placehold.co/150x225?text=No+Image"
+                      }
+                      alt={actor.name}
+                      className="card-img-top rounded-top"
+                      style={{
+                        height: "225px",
+                        objectFit: "cover",
+                        borderTopLeftRadius: "1rem",
+                        borderTopRightRadius: "1rem",
+                      }}
+                    />
+                    <div className="card-body p-2">
+                      <h6
+                        className="card-title mb-1 text-white fw-semibold"
+                        style={{ fontSize: "1rem" }}
+                      >
+                        {actor.name}
+                      </h6>
+                      <p
+                        className="card-text text-secondary mb-0"
+                        style={{ fontSize: "0.9rem" }}
+                      >
+                        {actor.character || "No character info"}
+                      </p>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <style>{`
+        .actor-card:hover {
+          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .bg-opacity-85 {
+          background-color: rgba(20, 20, 20, 0.85) !important;
+        }
+      `}</style>
+
+      <SimilarMovies movieId={id} />
+    </>
   );
 };
 
