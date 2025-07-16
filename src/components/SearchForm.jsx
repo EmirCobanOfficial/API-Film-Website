@@ -26,7 +26,7 @@ export default function SearchForm() {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button className={`btn btn ${theme} border`} type="submit">
+      <button className={`btn btn-outline-${theme === "dark" ? "light" : "dark"}`} type="submit">
         <i className="bi bi-search"></i>
       </button>
     </form>

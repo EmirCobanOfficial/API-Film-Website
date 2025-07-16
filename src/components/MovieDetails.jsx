@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react";
-
+import { useContext, useCallback } from "react";
+import { UserContext } from "../contexts/UserContext";
 export default function MovieDetails({ movieObj, onClose, api_key, language }) {
   const [loadedMovie, setLoadedMovie] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { watchList, addToWatchList, removeFromWatchList } =
+    useContext(UserContext);
+
+  const getMovieDetails = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieObj.id}?api_key=${api_key}&language=${language}&append_to_response=credits`
+      );
+      if (!response.ok) {
+        throw new Error("Error fetching movie details");
+      }
+      const data = await response.json();
+      if (data) {
+        setLoadedMovie(data);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    setLoading(false);
+  }, [movieObj.id, api_key, language]);
 
   useEffect(() => {
-    async function getMovieDetails() {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${movieObj.id}?api_key=${api_key}&language=${language}&append_to_response=credits`
-        );
-        if (!response.ok) {
-          throw new Error("Error fetching movie details");
-        }
-        const data = await response.json();
-        if (data) {
-          setLoadedMovie(data);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-      setLoading(false);
-    }
     getMovieDetails();
-  }, [movieObj, api_key, language]);
+  }, [getMovieDetails]);
 
   return (
     <div className="my-3">
@@ -51,6 +55,22 @@ export default function MovieDetails({ movieObj, onClose, api_key, language }) {
               <p>{movieObj.overview}</p>
               <p>Release Date: {movieObj.release_date}</p>
               <p>Rating: {movieObj.vote_average}</p>
+              {watchList.some((item) => item.id === movieObj.id) ? (
+                <button
+                  className="btn btn-danger mt-3 d-flex align-items-center"
+                  onClick={() => removeFromWatchList(movieObj)}
+                >
+                  <i className="bi bi-heart-fill me-2"></i> Remove from
+                  Watchlist
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary mt-3 d-flex align-items-center"
+                  onClick={() => addToWatchList(movieObj)}
+                >
+                  <i className="bi bi-heart me-2"></i> Add to Watchlist
+                </button>
+              )}
               {loading && <p>Loading details...</p>}
               {loadedMovie && (
                 <div>
@@ -68,8 +88,6 @@ export default function MovieDetails({ movieObj, onClose, api_key, language }) {
                       (p) => p.job === "Screenplay" || p.job === "Writer"
                     )?.name || "N/A"}
                   </p>
-
-                  {/* --- NEW & IMPROVED GENRES SECTION --- */}
                   {loadedMovie.genres?.length > 0 && (
                     <div className="mt-4">
                       <h5>Genres</h5>
@@ -87,12 +105,10 @@ export default function MovieDetails({ movieObj, onClose, api_key, language }) {
                       </div>
                     </div>
                   )}
-                  {/* --- END OF NEW SECTION --- */}
                 </div>
               )}
 
-              {/* Actors section remains the same */}
-              <p className="mt-4">Actors</p>
+              <p className="mt-4">Actor</p>
               <div className="row">
                 {loadedMovie?.credits?.cast?.slice(0, 12).map((actor) => (
                   <div className="col-md-2" key={actor.id}>

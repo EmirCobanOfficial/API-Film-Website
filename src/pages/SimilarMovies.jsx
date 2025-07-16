@@ -42,6 +42,8 @@ function SimilarMovies({ movieId }) {
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error} />;
 
-  return <MovieList movies={movies} title="Similar Movies" />;
+  return (
+    movies.length > 0 && <MovieList movies={movies} title="Similar Movies" />
+  );
 }
 export default SimilarMovies;

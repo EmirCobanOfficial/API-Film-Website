@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Loading from "../components/loading";
+import { useContext } from "react";
 import ErrorMessage from "../components/ErrorMessage";
 import SimilarMovies from "./SimilarMovies";
+import { UserContext } from "../contexts/UserContext";
 
 const apiUrl = "https://api.themoviedb.org/3";
 const api_key = "b06c4279d23840a7ced8ecb94f0faff4";
@@ -14,6 +16,7 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { watchList, addToWatchList, removeFromWatchList } = useContext(UserContext);
 
   useEffect(() => {
     async function getMovie() {
@@ -117,6 +120,23 @@ const MovieDetails = () => {
                     </span>
                   </p>
                 </div>
+                {/* Add to Watchlist Button */}
+                {watchList.some((item) => item.id === movie.id) ? (
+                  <button
+                    className="btn btn-danger mt-3 d-flex align-items-center"
+                    onClick={() => removeFromWatchList(movie)}
+                  >
+                    <i className="bi bi-heart-fill me-2"></i> Remove from
+                    Watchlist
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-primary mt-3 d-flex align-items-center"
+                    onClick={() => addToWatchList(movie)}
+                  >
+                    <i className="bi bi-heart me-2"></i> Add to Watchlist
+                  </button>
+                )}
               </div>
             </div>
           </div>

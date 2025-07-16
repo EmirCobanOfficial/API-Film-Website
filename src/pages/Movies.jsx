@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ErrorMessage from "../components/ErrorMessage";
-import Movie from "../components/Movie";
 import Loading from "../components/loading";
 import MovieList from "../components/MovieList";
 
@@ -43,6 +42,6 @@ function Movies() {
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error} />;
 
-  return <MovieList movies={movies} title={"Similar Movies"} />;
+  return <MovieList movies={movies} title={"Popular Movies"} />;
 }
 export default Movies;

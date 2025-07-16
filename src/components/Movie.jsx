@@ -1,9 +1,13 @@
 import { Link } from "react-router";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function Movie({ movieObj }) {
   const imageSrc = movieObj.poster_path
     ? "https://image.tmdb.org/t/p/original/" + movieObj.poster_path
     : "https://placehold.co/150x225?text=No+Image";
+
+  const { watchList, addToWatchList, removeFromWatchList } = useContext(UserContext);
 
   return (
     <div className="col">
@@ -32,6 +36,15 @@ export default function Movie({ movieObj }) {
               {movieObj.release_date?.slice(0, 4)}
             </span>
           </div>
+          {watchList.some((item) => item.id === movieObj.id) ? (
+            <button className="btn btn-danger position-absolute top-0 end-0 m-2" onClick={() => removeFromWatchList(movieObj)}>
+              <i className="bi bi-heart-fill"></i>
+            </button>
+          ) : (
+            <button className="btn btn-primary position-absolute top-0 end-0 m-2" onClick={() => addToWatchList(movieObj)}>
+              <i className="bi bi-heart"></i>
+            </button>
+          )}
         </div>
         <Link
           to={`/movies/${movieObj.id}`}

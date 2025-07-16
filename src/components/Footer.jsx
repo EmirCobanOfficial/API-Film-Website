@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import Movie from "./Movie";
 import { ThemeContext } from "../contexts/ThemeContext";
 
 export default function Footer() {
@@ -21,21 +20,21 @@ export default function Footer() {
             <i className="bi bi-facebook"></i>
           </a>
           <a
-            className={`bg-${theme} text-center text-${textColor} border-top border-body`}
+            className={`btn btn-outline-${textColor} btn-floating m-1`}
             href="#!"
             role="button"
           >
             <i className="bi bi-twitter"></i>
           </a>
           <a
-            className={`bg-${theme} text-center text-${textColor} border-top border-body`}
+            className={`btn btn-outline-${textColor} btn-floating m-1`}
             href="#!"
             role="button"
           >
             <i className="bi bi-google"></i>
           </a>
           <a
-            className={`bg-${theme} text-center text-${textColor} border-top border-body`}
+            className={`btn btn-outline-${textColor} btn-floating m-1`}
             href="#!"
             role="button"
           >
@@ -43,7 +42,6 @@ export default function Footer() {
           </a>
         </section>
       </div>
-
       <div className="text-center p-3">
         © 2026 Copyright:
         <a className={`text-${textColor}`} href="#!">

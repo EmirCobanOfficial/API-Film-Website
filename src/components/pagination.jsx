@@ -24,14 +24,14 @@ export default function Pagination({
             Previous
           </button>
           <span>
-            Page {page} of {totalPages}
+            Page {page} of {totalPages > 500 ? 500 : totalPages}
           </span>
           <button
             className="btn btn-primary"
             onClick={() =>
               setSearchParams({ q: query, page: Number(page) + 1 })
             }
-            disabled={Number(page) >= totalPages}
+            disabled={Number(page) >= (totalPages > 500 ? 500 : totalPages)}
           >
             Next
           </button>
