@@ -3,7 +3,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import Loading from "../components/loading";
 import MovieList from "../components/MovieList";
 import { useSearchParams } from "react-router";
-import Pagination from "../components/pagination";
+import Pagination from "../components/Pagination";
 
 const apiUrl = "https://api.themoviedb.org/3";
 const api_key = "b06c4279d23840a7ced8ecb94f0faff4";
