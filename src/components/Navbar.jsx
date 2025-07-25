@@ -7,7 +7,7 @@ import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 
 export default function Navbar() {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { watchList } = useContext(UserContext);
 
   return (
@@ -15,6 +15,7 @@ export default function Navbar() {
       className={`navbar navbar-expand-lg bg-${theme} border-bottom border-body`}
       data-bs-theme={theme}
     >
+      <ThemeSelector />
       <div className="container">
         <Logo />
         <button
@@ -31,13 +32,25 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <ul className="navbar-nav">
             <li className="nav-item me-2">
-              <NavLink className="nav-link" aria-current="page" to="/">
+              <NavLink className="nav-link" to="/">
                 Home
               </NavLink>
             </li>
             <li className="nav-item me-2">
-              <NavLink className="nav-link" aria-current="page" to="/movies">
+              <NavLink className="nav-link" to="/movies">
                 Movies
+              </NavLink>
+            </li>
+          </ul>
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item me-2">
+              <NavLink className="nav-link" to="/login">
+                Login
+              </NavLink>
+            </li>
+            <li className="nav-item me-2">
+              <NavLink className="nav-link" to="/register">
+                Register
               </NavLink>
             </li>
           </ul>
@@ -51,7 +64,6 @@ export default function Navbar() {
               {watchList.length}
             </span>
           </Link>
-          <ThemeSelector />
         </div>
       </div>
     </nav>

@@ -97,7 +97,7 @@ export default function MovieDetails({ movieObj, onClose, api_key, language }) {
                             href="#"
                             key={genre.id}
                             className="badge bg-info me-2 mb-2 text-decoration-none"
-                            onClick={(e) => e.preventDefault()} // Prevents page from jumping
+                            onClick={(e) => e.preventDefault()}
                           >
                             {genre.name}
                           </a>

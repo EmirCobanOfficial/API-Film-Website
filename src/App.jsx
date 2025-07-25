@@ -6,17 +6,21 @@ import MovieDetails from "./pages/MovieDetails";
 import MainLayout from "./Layouts/MainLayout";
 import SearchResults from "./pages/SearchResults";
 import UserWatchList from "./pages/UserWatchList";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
-      { path: "/", element: <Home /> },
-      { path: "/movies", element: <Movies /> },
-      { path: "/movies/:id", element: <MovieDetails /> },
-      { path: "/search", element: <SearchResults /> },
-      { path: "/watchlist", element: <UserWatchList /> },
+      { index: true, element: <Home /> },
+      { path: "movies", element: <Movies /> },
+      { path: "movies/:id", element: <MovieDetails /> },
+      { path: "search", element: <SearchResults /> },
+      { path: "watchlist", element: <UserWatchList /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
     ],
   },
 ]);
